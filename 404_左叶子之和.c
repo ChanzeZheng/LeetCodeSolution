@@ -1,53 +1,30 @@
-#include<stdio.h>
-#include<malloc.h>
-
-
-struct TreeNode {
-	int val;
-	struct TreeNode *left;
-	struct TreeNode *right;
-};
-
-#define MAX_SIZE 100
 #define Node struct TreeNode
 
-/*
-* 初始化一个节点
-*/
-Node* initNode(int val) {
-	Node* node = (Node*)malloc(sizeof(Node));
-	node->val = val;
-	node->left = NULL;
-	node->right = NULL;
-	return node;
-}
+ int solution(Node* root,int flag) {
+	 int leftTreeSum, rightTreeSum;						//左子树的左叶子之和，右子树的左叶子之和
+	 leftTreeSum = rightTreeSum = 0;					//初始化为0
+	 if (!root->left && !root->right && flag) {		//左叶子节点
+		 return root->val;
+	 }
+	 if (!root->left && !root->right) {				//右叶子节点
+		 return 0;
+	 }
+	 if (root->left) {
+		 leftTreeSum = solution(root->left, 1);				//标志为左节点
+	 }
+	 if (root->right) {
+		 rightTreeSum = solution(root->right, 0);			//标志为右节点
+	 }
+	 return leftTreeSum + rightTreeSum;
+ }
 
-/*
-*	添加子节点的函数，自动判断加入左右哪个节点
-*/
-void addChildNode(Node* father, Node* child) {
-	if (father->val >= child->val) {			//父节点大于子节点，加入左节点
-		father->left = child;
-	}
-	else				//父节点小于子节点，加入右节点
-	{
-		father->right = child;
-	}
+
+int sumOfLeftLeaves(struct TreeNode* root) {
+    if(!root){
+        return 0;
+    }
+    return solution(root, 0);
+	
+	
 	
 }
-
-
- /**
-  * Note: The returned array must be malloced, assume caller calls free().
-  */
-struct TreeNode** generateTrees(int n, int* returnSize) {
-	Node** result = (Node**)malloc(sizeof(Node) * MAX_SIZE);				//创建一个MAX_SIZE大小的二维数组作为结果数组返回
-	*returnSize = 0;
-
-	return result;
-}
-
-
-
-
-
